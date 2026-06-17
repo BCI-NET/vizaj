@@ -1,3 +1,8 @@
+# [DEPRECATED]
+
+*This repo is not maintained anymore. For the latest, maintained version of Vizaj, go to [https://github.com/Inria-NERV/vizaj](https://github.com/Inria-NERV/vizaj)
+
+
 Vizaj - A free online interactive software for visualizing spatial networks
 =====
 
@@ -8,8 +13,6 @@ Vizaj is based on Three.js and the sofwtare is licensed under the terms of the B
 This tool aims to be a 3d visualization tool for networks with fixed node position. It it provided with a GUI which helps customizing the nodes, links background, support item, camera and any extra informations.
 
 The camera can be rotated by drag and drop. Right-click drag and drop translates the camera. Scrolling zooms and unzooms.
-
-The online app can be accessed here https://bci-net.github.io/vizaj/
 
 # Load data
 

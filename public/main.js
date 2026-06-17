@@ -4,7 +4,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 import { assignSensorLabels, clearAllSensors, drawSensorsAndUpdateGlobalValues, loadSensorCoordinates, sensorMaterial } from "../js/draw_sensors.js";
 import "regenerator-runtime/runtime.js";
 import { addLightAndBackground } from "../js/add_light_and_background";
-import { loadAndDrawCortexModel, handleTransformControlChangeEvent, updateTransformControlHistory } from "../js/draw_cortex.js";
+import { initTransformControls,loadAndDrawCortexModel, handleTransformControlChangeEvent, updateTransformControlHistory } from "../js/draw_cortex.js";
 import { clearLoadAndDrawSensors,
   loadAndAssignSensorLabels } from '../js/draw_sensors.js';
 import {
@@ -119,12 +119,24 @@ function onWindowResize() {
 async function generateSceneElements() {
   setupCamera();
   addLightAndBackground();
-  scene.add( transformControls );
+  
+  // Wait for the first render to complete
+  await new Promise(resolve => {
+    renderer.setAnimationLoop(() => {
+      renderer.render(scene, camera);
+      renderer.setAnimationLoop(null);
+      resolve();
+    });
+  });
+  
+  // Now initialize transform controls
+  initTransformControls();
+  
+  // Rest of your initialization
+  scene.add(transformControls);
   loadAndDrawCortexModel();
   const data = await loadSensorCoordinates(sensorCoordinatesUrl);
-  await drawSensorsAndUpdateGlobalValues(data);
-  await loadAndAssignSensorLabels(sensorLabelsUrl);
-  await loadAndDrawLinksFromUrl(connectivityMatrixUrl);
+  // ...
 }
 
 function onDocumentMouseMove(event) {

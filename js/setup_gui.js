@@ -16,7 +16,7 @@ import { updateBrainMeshVisibility,
     scaleModeTransformControls,
     resetPositionExtraItemMesh,
     disableTransformControls,
-    undoTransformControls } from './draw_cortex';
+    undoTransformControls, toggleTransformControls } from './draw_cortex';
 import { redrawDegreeLines, updateAllDegreeLineLength, updateAllDegreeLineMaterial, updateAllDegreeLineVisibility } from './draw_degree_line';
 import { export2DImage, export3Dgltf, isExporting2DImage } from './export_image';
 import { updateBackgroundColor, resetBackgroundColor } from './add_light_and_background';
@@ -228,7 +228,7 @@ function setupGui() {
     extraItemFolder.addColor(guiParams, 'colorExtraItem').name('Color').onChange(updateExtraItemMaterial).listen();
     extraItemFolder.add(guiParams, 'resetExtraItemColor').name('Reset color');
     extraItemFolder.add(guiParams, 'extraItemMeshShape',
-        ['brain', 'scalp', 'innerSkull', 'sphere', 'cube'])
+        ['brain', 'scalp', 'innerSkull', 'sphere', 'cube', 'dualBrain'])
         .name('Shape').onChange(updateExtraItemMesh);
     const moveExtraItemFolder = extraItemFolder.addFolder('Move support');
     moveExtraItemFolder.add(guiParams, 'translateModeTransformControls').name('Translate');
@@ -337,6 +337,53 @@ function setupGui() {
     const logsFolder = gui.addFolder('Logs');
     logsFolder.add(guiParams, 'showLogs').name("Show");
     logsFolder.add(guiParams, 'hideLogs').name("Hide");
+
+      // For consistency, also add controls for the main brain
+  const mainBrainFolder = gui.addFolder('Main Brain Controls');
+  
+  mainBrainFolder.add({
+    translateMainBrain: function() {
+      toggleTransformControls('translate', 0);
+    }
+  }, 'translateMainBrain').name('Translate Main Brain');
+  
+  mainBrainFolder.add({
+    rotateMainBrain: function() {
+      rotateModeTransformControls(0);
+    }
+  }, 'rotateMainBrain').name('Rotate Main Brain');
+  
+  mainBrainFolder.add({
+    scaleMainBrain: function() {
+      toggleTransformControls('scale', 0);
+    }
+  }, 'scaleMainBrain').name('Scale Main Brain');
+    
+// Add a folder for second brain transform controls
+  const secondBrainFolder = gui.addFolder('Second Brain Controls');
+  
+  // Translate control for second brain
+  secondBrainFolder.add({
+    translateSecondBrain: function() {
+      toggleTransformControls('translate', 1);
+    }
+  }, 'translateSecondBrain').name('Translate Second Brain');
+  
+  // Rotate control for second brain
+  secondBrainFolder.add({
+    rotateSecondBrain: function() {
+      rotateModeTransformControls(1);
+    }
+  }, 'rotateSecondBrain').name('Rotate Second Brain');
+  
+  // Scale control for second brain
+  secondBrainFolder.add({
+    scaleSecondBrain: function() {
+      toggleTransformControls('scale', 1);
+    }
+  }, 'scaleSecondBrain').name('Scale Second Brain');
+
+
 }
 
 export {
